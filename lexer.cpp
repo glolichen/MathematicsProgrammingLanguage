@@ -28,6 +28,8 @@
 
 #define LITERAL 15
 
+#define ARROW 16
+
 const std::string LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const std::string NUMBERS = "0123456789";
 const std::string KEYWORDS[] = {
@@ -35,7 +37,11 @@ const std::string KEYWORDS[] = {
 	"let",
 	"be",
 	"For each",
-	"in"	
+	"in",
+	"be the function defined for",
+	"and defined by",
+	"integer",
+	"float",
 };
 
 const std::string TYPES[] = {
@@ -55,6 +61,7 @@ const std::string TYPES[] = {
 	"MULTIPLY",
 	"DIVIDE",
 	"LITERAL",
+	"ARROW",
 };
 
 struct Token {
@@ -207,13 +214,38 @@ int main(int argc, char **argv) {
 					tokens.push_back({ RBKT, curSentence, ret });
 				else if (c == '+')
 					tokens.push_back({ PLUS, curSentence, ret });
-				else if (c == '-')
-					tokens.push_back({ MINUS, curSentence, ret });
+				else if (c == '-') {
+					if (i < file.size() - 1 && file[i + 1] == '>') {
+						tokens.push_back({ ARROW, curSentence, ret + ">" });
+					}
+					else
+						tokens.push_back({ MINUS, curSentence, ret });
+				}
 				else if (c == '*')
 					tokens.push_back({ MULTIPLY, curSentence, ret });
 				else if (c == '/')
 					tokens.push_back({ DIVIDE, curSentence, ret });
 			}
+		}
+	}
+
+	for (int i = 0; i < tokens.size(); i++) {
+		if (i < tokens.size() - 1 && tokens[i].token == "For" && tokens[i + 1].token == "each") {
+			tokens[i] = { KEYWORD, tokens[i].sentence, "For each" };
+			tokens.erase(std::next(tokens.begin(), i + 1));
+			i--;
+		}
+		if (i < tokens.size() - 4 && tokens[i].token == "be" && tokens[i + 1].token == "the"
+			&& tokens[i + 2].token == "function" && tokens[i + 3].token == "defined" && tokens[i + 4].token == "for") {
+
+			tokens[i] = { KEYWORD, tokens[i].sentence, "be the function defined for" };
+			tokens.erase(std::next(tokens.begin(), i + 1), std::next(tokens.begin(), i + 5));
+			i -= 4;
+		}
+		if (i < tokens.size() - 2 && tokens[i].token == "and" && tokens[i + 1].token == "defined" && tokens[i + 2].token == "by") {
+			tokens[i] = { KEYWORD, tokens[i].sentence, "and defined by" };
+			tokens.erase(std::next(tokens.begin(), i + 1), std::next(tokens.begin(), i + 3));
+			i -= 2;
 		}
 	}
 
