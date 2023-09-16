@@ -19,12 +19,9 @@ The type of your variable is dynamic, similar to python.
 
 ## Functions
 
-Functions must be defined for a number of parameters.<br>
-The input type and output type must be stated too.<br>
-You must define this, even though MPL is weakly typed, because I want to annoy you.<br>
-If your parameter is not of that type, you will get an exception.<br>
-Functions must return a value and have no side effects, so MPL is a purely functional language, like Haskell.<br>
-And your function must be one expression defined in one sentence, because Mathematics.
+Functions must be defined for a number of parameters, and the input type and output type must be stated as well. When you run the function, you must ensure the variable is of that type.
+
+Functions must return a value and have no side effects, just like in mathematics. This makes MPL is a purely functional language, similar to Haskell.
 
 ```
 def add(num1: int, num2: int) -> int:
@@ -34,6 +31,7 @@ def add(num1: int, num2: int) -> int:
 ```
 Let add be the function defined for (integer, integer) -> integer and defined by add(num1, num2) = num1 + num2.
 ```
+We see that the function definition in MPL is pointlessly long and verbose. This is intentional, of course.
 
 ## Data types
 
