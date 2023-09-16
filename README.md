@@ -77,8 +77,7 @@ To print a variable, use `Output variable.`
 
 ## Syntax
 
-In MPL, you have to use a period (.) to signify the end of your sentence. This is very similar to the semicolon in C or Java.<br>
-If you don't the sentence will continue and you'll probably get an error. If you have a super long expression, you can make it continue to the next line by not inserting the period.
+In MPL, you have to use a period (.) to signify the end of your sentence. This is very similar to the semicolon in C or Java. If you have a super long expression, you can make it continue to the next line by not inserting the period.
 
 The first character of a sentence must be capitalized, and there must be either a space or new line after the period to distinguish it from a decimal point.
 
