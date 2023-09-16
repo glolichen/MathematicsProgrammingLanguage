@@ -1,6 +1,6 @@
 # Mathematics Programming Language
 
-A really cursed language where you wrote code that looks like mathematical proofs. Inspired by [Shakespeare Programming Language](https://en.wikipedia.org/wiki/Shakespeare_Programming_Language), where programs appear like Shakespearean plays.
+A really cursed language where you wrote code that looks like mathematical proofs. Inspired by [Shakespeare Programming Language](https://en.wikipedia.org/wiki/Shakespeare_Programming_Language#Example_code), where programs appear like Shakespearean plays.
 
 ## Variables
 
