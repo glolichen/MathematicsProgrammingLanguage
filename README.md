@@ -15,7 +15,7 @@ Python -> MPL:
 `variable2 = variable1 * 3`<br>
 `let variable2 be variable1 * 3.`
 
-The type of your variable is dynamic, must like python.
+The type of your variable is dynamic, similar to python.
 
 ## Functions
 
@@ -62,4 +62,4 @@ Doesn't exist, go write your own ~~array~~ list of chars.
 You know how Java, C, C++, etc require you to put a semicolon to mark the end of a line?<br>
 In MPL, you have to use a period (.) to signify the end of your sentence.<br>
 If you don't the sentence will continue and you'll probably get an error.<br>
-So if you have a super long expression (because your function can only be one sentence), you can make it continue to the next line.
+So if you have a super long expression (possibly because your function can only be one sentence), you can make it continue to the next line.
