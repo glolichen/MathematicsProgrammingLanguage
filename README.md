@@ -1,6 +1,6 @@
 # Mathematics Programming Language
 
-A really cursed language where you wrote code that looks like mathematical proofs. Inspired by Shakespeare Programming Language
+A really cursed language where you wrote code that looks like mathematical proofs. Inspired by [Shakespeare Programming Language](https://en.wikipedia.org/wiki/Shakespeare_Programming_Language), where programs appear like Shakespearean plays.
 
 ## Variables
 
@@ -23,7 +23,7 @@ Functions must be defined for a number of parameters.<br>
 The input type and output type must be stated too.<br>
 You must define this, even though MPL is weakly typed, because I want to annoy you.<br>
 If your parameter is not of that type, you will get an exception.<br>
-Functions must return a value and have no side effects. Therefore, MPL is a purely functional language.<br>
+Functions must return a value and have no side effects, so MPL is a purely functional language, like Haskell.<br>
 And your function must be one expression defined in one sentence, because Mathematics.
 
 ```
@@ -55,11 +55,16 @@ Python doesn't have chars, so I will use C to give an example.
 Doesn't exist, go write your own ~~array~~ list of chars.
 
 ### Lists
+Lists aren't really a thing in mathematics, so I'll just use the Computing definitio of Lists/Arrays in here.
+A list is an ordered collection of items that supports duplicates. Elements can be modified or read by index number:
+List indexes start at 1.
 
+the ith element of list is set to x: `let list[i] be x`
+read the ith element of the list: `list[i]`
 
 ## Syntax
 
-You know how Java, C, C++, etc require you to put a semicolon to mark the end of a line?<br>
 In MPL, you have to use a period (.) to signify the end of your sentence.<br>
+This is very similar to the semicolon in C or Java.<br>
 If you don't the sentence will continue and you'll probably get an error.<br>
 So if you have a super long expression (possibly because your function can only be one sentence), you can make it continue to the next line.
