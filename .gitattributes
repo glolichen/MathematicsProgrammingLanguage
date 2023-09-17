@@ -1,1 +1,1 @@
-*.mpl linguist-language=MPL
+*.mpl linguist-detectable=false
