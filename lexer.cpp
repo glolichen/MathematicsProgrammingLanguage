@@ -6,47 +6,29 @@
 #include <stdexcept>
 #include <regex>
 
-#define KEYWORD 0
-#define IDENTIFIER 1
+#include "lexer.hpp"
+
+#define KEYWD 0
+#define IDENT 1
 
 #define LPAR 2
 #define RPAR 3
 #define LBKT 4
 #define RBKT 5
-
 #define INT 6
 #define FLOAT 7
 #define CHAR 8
-
 #define PERIOD 9
 #define COMMA 10
-
 #define PLUS 11
 #define MINUS 12
 #define MULTIPLY 13
 #define DIVIDE 14
-
 #define LITERAL 15
-
 #define ARROW 16
-
-const std::string LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const std::string NUMBERS = "0123456789";
-const std::string KEYWORDS[] = {
-	"Let",
-	"let",
-	"be",
-	"For each",
-	"in",
-	"be the function defined for",
-	"and defined by",
-	"integer",
-	"float",
-};
-
 const std::string TYPES[] = {
-	"KEYWORD",
-	"IDENTIFIER",
+	"KEYWD",
+	"IDENT",
 	"LPAR",
 	"RPAR",
 	"LBKT",
@@ -64,11 +46,19 @@ const std::string TYPES[] = {
 	"ARROW",
 };
 
-struct Token {
-	int type, sentence;
-	std::string token;
+const std::string LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const std::string NUMBERS = "0123456789";
+const std::string KEYWORDS[] = {
+	"Let",
+	"let",
+	"be",
+	"For each",
+	"in",
+	"be the function defined for",
+	"and defined by",
+	"integer",
+	"float",
 };
-
 bool is_letter(char c) {
 	for (char letter : LETTERS) {
 		if (c == letter)
@@ -105,41 +95,37 @@ std::string scan(std::string file, int *index, std::function<bool(std::string, i
 	return ret;
 }
 
-int main(int argc, char **argv) {
-	std::ifstream fin("samplecode.mpl");
-	
-	std::stringstream ss;
-	ss << fin.rdbuf();
-	std::string file = ss.str();
-
+std::string lexer::type_to_string(int type) {
+	return TYPES[type];
+}
+void lexer::lex(std::string text, std::vector<lexer::Token> &output) {
 	int curSentence = 0;
 	bool isComment = false;
-	std::vector<Token> tokens;
-	for (int i = 0; i < file.size(); i++) {
-		if (file.substr(i, 8) == "COMMENT:")
+	for (int i = 0; i < text.size(); i++) {
+		if (text.substr(i, 8) == "COMMENT:")
 			isComment = true;
 
-		char c = file[i];
+		char c = text[i];
 		std::string token = "";
 
-		if (c == '.' && (i == file.size() - 1 || file[i + 1] == ' ' || file[i + 1] == '\n')) {
+		if (c == '.' && (i == text.size() - 1 || text[i + 1] == ' ' || text[i + 1] == '\n')) {
 			curSentence++;
 			if (!isComment)
-				tokens.push_back({ PERIOD, curSentence, "." });
+				output.push_back({ PERIOD, curSentence, "." });
 			isComment = false;
 		}
 		else if (!isComment) {
 			if (is_letter(c)) {
-				std::string token = scan(file, &i, [](std::string string, int index) {
+				std::string token = scan(text, &i, [](std::string string, int index) {
 					return is_letter(string[index]) || is_number(string[index]);
 				});
 				if (is_keyword(token))
-					tokens.push_back({ KEYWORD, curSentence, token });
+					output.push_back({ KEYWD, curSentence, token });
 				else
-					tokens.push_back({ IDENTIFIER, curSentence, token });
+					output.push_back({ IDENT, curSentence, token });
 			}
 			else if (is_number(c)) {
-				std::string token = scan(file, &i, [](std::string string, int index) {
+				std::string token = scan(text, &i, [](std::string string, int index) {
 					return is_number(string[index]) || (string[index] == '.' && index < string.size() && is_number(string[index + 1]));
 				});
 				bool isFloat = false;
@@ -150,36 +136,36 @@ int main(int argc, char **argv) {
 					}
 				}
 				if (isFloat)
-					tokens.push_back({ FLOAT, curSentence, token });
+					output.push_back({ FLOAT, curSentence, token });
 				else
-					tokens.push_back({ INT, curSentence, token });
+					output.push_back({ INT, curSentence, token });
 			}
 			else if (c == '"') {
 				bool isClosed = false;
 				std::string ret = "\"";
 				i++;
-				for (; i < file.size(); i++) {
-					ret += file[i];
-					if (file[i] == '"' && (i == 0 || file[i - 1] != '\\')) {
+				for (; i < text.size(); i++) {
+					ret += text[i];
+					if (text[i] == '"' && (i == 0 || text[i - 1] != '\\')) {
 						isClosed = true;
 						break;
 					}
 				}
 				if (!isClosed)
 					throw std::invalid_argument("unclosed string literal");
-				tokens.push_back({ LITERAL, curSentence, ret });
+				output.push_back({ LITERAL, curSentence, ret });
 			}
 			else if (c == '\'') {
-				if (file[i + 2] == '\'') {
-					std::string ret(1, file[++i]);
+				if (text[i + 2] == '\'') {
+					std::string ret(1, text[++i]);
 					ret = "'" + ret + "'";
-					tokens.push_back({ CHAR, curSentence, ret });
+					output.push_back({ CHAR, curSentence, ret });
 					i++;
 				}
-				else if (file[i + 1] == '\\' && file[i + 3] == '\'') {
+				else if (text[i + 1] == '\\' && text[i + 3] == '\'') {
 					std::string ret = "'\\";
 					// copied from https://stackoverflow.com/a/22185359
-					switch (file[i + 2]) {
+					switch (text[i + 2]) {
 						case '\\': ret += "\\"; break;
 						case '\"': ret += "\""; break;
 						case '\'': ret += "'"; break;
@@ -194,7 +180,7 @@ int main(int argc, char **argv) {
 						case '0': ret += "0"; break;
 					}
 					ret += "'";
-					tokens.push_back({ CHAR, curSentence, ret });
+					output.push_back({ CHAR, curSentence, ret });
 					i += 3;
 				}
 				else
@@ -203,55 +189,53 @@ int main(int argc, char **argv) {
 			else {
 				std::string ret(1, c);
 				if (c == ',')
-					tokens.push_back({ COMMA, curSentence, ret });
+					output.push_back({ COMMA, curSentence, ret });
 				else if (c == '(')
-					tokens.push_back({ LPAR, curSentence, ret });
+					output.push_back({ LPAR, curSentence, ret });
 				else if (c == ')')
-					tokens.push_back({ RPAR, curSentence, ret });
+					output.push_back({ RPAR, curSentence, ret });
 				else if (c == '[')
-					tokens.push_back({ LBKT, curSentence, ret });
+					output.push_back({ LBKT, curSentence, ret });
 				else if (c == ']')
-					tokens.push_back({ RBKT, curSentence, ret });
+					output.push_back({ RBKT, curSentence, ret });
 				else if (c == '+')
-					tokens.push_back({ PLUS, curSentence, ret });
+					output.push_back({ PLUS, curSentence, ret });
 				else if (c == '-') {
-					if (i < file.size() - 1 && file[i + 1] == '>') {
-						tokens.push_back({ ARROW, curSentence, ret + ">" });
+					if (i < text.size() - 1 && text[i + 1] == '>') {
+						output.push_back({ ARROW, curSentence, ret + ">" });
 					}
 					else
-						tokens.push_back({ MINUS, curSentence, ret });
+						output.push_back({ MINUS, curSentence, ret });
 				}
 				else if (c == '*')
-					tokens.push_back({ MULTIPLY, curSentence, ret });
+					output.push_back({ MULTIPLY, curSentence, ret });
 				else if (c == '/')
-					tokens.push_back({ DIVIDE, curSentence, ret });
+					output.push_back({ DIVIDE, curSentence, ret });
 			}
 		}
 	}
 
-	for (int i = 0; i < tokens.size(); i++) {
-		if (i < tokens.size() - 1 && tokens[i].token == "For" && tokens[i + 1].token == "each") {
-			tokens[i] = { KEYWORD, tokens[i].sentence, "For each" };
-			tokens.erase(std::next(tokens.begin(), i + 1));
+	for (int i = 0; i < output.size(); i++) {
+		if (i < output.size() - 1 && output[i].token == "For" && output[i + 1].token == "each") {
+			output[i] = { KEYWD, output[i].sentence, "For each" };
+			output.erase(std::next(output.begin(), i + 1));
 			i--;
 		}
-		if (i < tokens.size() - 4 && tokens[i].token == "be" && tokens[i + 1].token == "the"
-			&& tokens[i + 2].token == "function" && tokens[i + 3].token == "defined" && tokens[i + 4].token == "for") {
+		if (i < output.size() - 4 && output[i].token == "be" && output[i + 1].token == "the"
+			&& output[i + 2].token == "function" && output[i + 3].token == "defined" && output[i + 4].token == "for") {
 
-			tokens[i] = { KEYWORD, tokens[i].sentence, "be the function defined for" };
-			tokens.erase(std::next(tokens.begin(), i + 1), std::next(tokens.begin(), i + 5));
+			output[i] = { KEYWD, output[i].sentence, "be the function defined for" };
+			output.erase(std::next(output.begin(), i + 1), std::next(output.begin(), i + 5));
 			i -= 4;
 		}
-		if (i < tokens.size() - 2 && tokens[i].token == "and" && tokens[i + 1].token == "defined" && tokens[i + 2].token == "by") {
-			tokens[i] = { KEYWORD, tokens[i].sentence, "and defined by" };
-			tokens.erase(std::next(tokens.begin(), i + 1), std::next(tokens.begin(), i + 3));
+		if (i < output.size() - 2 && output[i].token == "and" && output[i + 1].token == "defined" && output[i + 2].token == "by") {
+			output[i] = { KEYWD, output[i].sentence, "and defined by" };
+			output.erase(std::next(output.begin(), i + 1), std::next(output.begin(), i + 3));
 			i -= 2;
 		}
 	}
 
-	for (Token token : tokens) {
+	for (lexer::Token token : output) {
 		std::cout << token.token << " " << TYPES[token.type] << "\n";
 	}
-
-	return 0;
 }
