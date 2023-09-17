@@ -26,6 +26,8 @@
 #define DIVIDE 14
 #define LITERAL 15
 #define ARROW 16
+#define EQUAL 17
+
 const std::string TYPES[] = {
 	"KEYWD",
 	"IDENT",
@@ -44,6 +46,7 @@ const std::string TYPES[] = {
 	"DIVIDE",
 	"LITERAL",
 	"ARROW",
+	"EQUAL",
 };
 
 const std::string LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -99,7 +102,7 @@ std::string lexer::type_to_string(int type) {
 	return TYPES[type];
 }
 void lexer::lex(std::string text, std::vector<lexer::Token> &output) {
-	int curSentence = 0;
+	int curSentence = 1;
 	bool isComment = false;
 	for (int i = 0; i < text.size(); i++) {
 		if (text.substr(i, 8) == "COMMENT:")
@@ -109,9 +112,10 @@ void lexer::lex(std::string text, std::vector<lexer::Token> &output) {
 		std::string token = "";
 
 		if (c == '.' && (i == text.size() - 1 || text[i + 1] == ' ' || text[i + 1] == '\n')) {
-			curSentence++;
-			if (!isComment)
+			if (!isComment) {
 				output.push_back({ PERIOD, curSentence, "." });
+				curSentence++;
+			}
 			isComment = false;
 		}
 		else if (!isComment) {
@@ -211,6 +215,8 @@ void lexer::lex(std::string text, std::vector<lexer::Token> &output) {
 					output.push_back({ MULTIPLY, curSentence, ret });
 				else if (c == '/')
 					output.push_back({ DIVIDE, curSentence, ret });
+				else if (c == '=')
+					output.push_back({ EQUAL, curSentence, ret });
 			}
 		}
 	}
