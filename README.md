@@ -2,18 +2,24 @@
 
 A really cursed language where you wrote code that looks like mathematical proofs. Inspired by [Shakespeare Programming Language](https://en.wikipedia.org/wiki/Shakespeare_Programming_Language#Example_code), where programs appear like Shakespearean plays.
 
+My goal with MPL is to create a language that is both pointlessly verbose and unreadable and low level, hopefully lower than C. Below is a specification for MPL syntax and features.
+
 ## Variables
 
 Variables must be definied with the syntax:
 let variableName be ...
 
-Python -> MPL:
+Python
+```
+variable1 = 500
+variable2 = variable1 * 3
+```
 
-`variable1 = 500`<br>
-`Let variable1 be 500.`
-
-`variable2 = variable1 * 3`<br>
-`Let variable2 be variable1 * 3.`
+MPL
+```
+Let variable1 be 500.`
+Let variable2 be variable1 * 3.
+```
 
 The type of your variable is dynamic, similar to python.
 
@@ -21,63 +27,131 @@ The type of your variable is dynamic, similar to python.
 
 Functions must be defined for a number of parameters, and the input type and output type must be stated as well. When you run the function, you must ensure the variable is of that type.
 
-Functions must return a value and have no side effects, just like in mathematics. This makes MPL is a purely functional language, similar to Haskell.
+Functions must return a value and have no side effects, just like in mathematics.
 
+Python
 ```
 def add(num1: int, num2: int) -> int:
 	return num1 + num2
 ```
 
+MPL
 ```
 Let add be the function defined for (integer, integer) -> integer and defined by add(num1, num2) = num1 + num2.
 ```
-We see that the function definition in MPL is pointlessly long and verbose. This is intentional, of course.
+
+## Comparison operators
+
+### Equal to
+Python: `a == b`<br>
+MPL: `a = b`
+
+### Not equal to
+Python: `a != b`<br>
+MPL: `a =/= b`
+
+### Greater than
+Python: `a > b`<br>
+MPL: `a > b`
+
+### Greater than or equal to
+Python: `a >= b`<br>
+MPL: `a >= b`
+
+### Less than
+Python: `a < b`<br>
+MPL: `a < b`
+
+### Less than or equal to
+Python: `a <= b`<br>
+MPL: `a <= b`
+
+## Logical operators
+
+### Negation
+Python: `not a`<br>
+C/C++/Java: `!a`<br>
+MPL: `~a` ([source](https://en.wikipedia.org/wiki/Negation))
+
+### And
+Python: `a and b`<br>
+C/C++/Java: `a && b`<br>
+MPL: `a ^ b` ([source](https://en.wikipedia.org/wiki/Logical_conjunction))
+
+### Or
+Python: `a or b`<br>
+C/C++/Java: `a || b`<br>
+MPL: `a + b` ([source](https://en.wikipedia.org/wiki/Logical_disjunction))
+
+## Bitwise operators
+
+Who needs those?
+
+## Assignment operators
+
+### Direct assignment
+Python: `a = b`<br>
+MPL: `Let a be b`
 
 ## Data types
 
 ### Number types
-There are two number types: number and double precision floating point number. Hopefully they will not have limits like python.
+There are two number types: number and double precision floating point number. They are variable bit, like python.
 
 ### Character types
-Because MPL is designed to be inclusive of everyone's cultures, characters will be encoded in Unicode, so it's not just English letters.<br>
-To define a character, use the single quotation mark ('c')
+Because MPL is designed to be inclusive of everyone's cultures, characters will be encoded in Unicode, so it's not just English letters. To define a character, use the single quotation mark ('c')
 
-Python doesn't have chars, so I will use C to give an example.
+C/C++/Java: `char c = 'a';`
 
-`char c = 'a';`<br>
-`Let c be 'a'.`
+MPL: `Let c be 'a'.`
 
 ### Strings
 Doesn't exist, go write your own ~~array~~ list of chars.
 Double quotation marks ("") is the same as an array of chars, so "abc" is equivalent to ['a','b','c'].
 
 ### Lists
-Lists aren't really a thing in mathematics, so I'll just use the Computing definitio of Lists/Arrays in here.
-A list is an ordered collection of items that supports duplicates. Elements can be modified or read by index number:
-List indexes start at 1.
+Lists aren't really a thing in mathematics (at least to my knowledge), so I'll just use the Computing definition of Lists/Arrays in here.
 
-the ith element of list is set to x: `Let list[i] be x`
-read the ith element of the list: `list[i]`
+A list is an ordered collection of items that supports duplicates. Elements can be modified or read by index number, and indices  start at 1 (lol).
 
-To create a list, either specify pre-define its elements or add the elements manually.
+the ith element of list is set to x: `Let list_i be x`
+read the ith element of the list: `list_i`
 
-`Let list be [0,1,2,3]`<br>
-`Let list be []. For each i in [0,1,2], add 0 to list.`
+MPL has this ~~bizarre~~ unique underscore extraction operator because I've seen people use subscript as indices in math. 
+
+To create a list, specify the length of the list. This can be a variable or a constant. The list is not initialized with 0 so it could be filled with garbage.
+
+```
+Let list be 4 long.
+
+Let list2Length be 500.
+Let list2 be list2Length long.
+```
+
+You must free the list when it is no longer in use. Otherwise, you will create a memory leak.
+```
+Forget list. Forget list2.
+```
 
 ## For loop
 
-For loops are also not a thing in math, but I supposed "for all" (∀) kind of works.
-For now I will just have a for each loop. You can iterate over a list with the syntax:
+Doesn't exist, use goto.
 
-`For each i in list, ...`
+## Goto
+
+Because everyone with a valid opinion (apart from Linus Torvalds) seems to hate goto, they're the only method of looping in MPL. Use `refer to sentence [sentence number]` to go to a certain sentence. Comments do not count as sentences.
+
+## If statement
+
+If statements are too complicated and high level for MPL. The only branching statement is `refer to sentence [sentence number] if [condition]`, which is basically a goto if statement.
 
 ## I/O
 
-To print a variable, use `Output variable.`
+To print a variable, use `output variable`.
 
 ## Syntax
 
-In MPL, you have to use a period (.) to signify the end of your sentence. This is very similar to the semicolon in C or Java. If you have a super long expression, you can make it continue to the next line by not inserting the period.
+In MPL, you have to use a period (.) to signify the end of your sentence. This is like the semicolon in C or Java.
 
 The first character of a sentence must be capitalized, and there must be either a space or new line after the period to distinguish it from a decimal point.
 
