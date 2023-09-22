@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(MPL VERSION 0.1.0 LANGUAGES C CXX)
+project(mpl VERSION 0.1.0 LANGUAGES C CXX)
 
 include(CTest)
 enable_testing()
 
-add_executable(MPL main.cpp lexer.cpp parser.cpp)
+add_executable(mpl main.cpp lexer.cpp parser.cpp)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

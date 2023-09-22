@@ -48,7 +48,7 @@ MPL: `a = b`
 
 ### Not equal to
 Python: `a != b`<br>
-MPL: `a =/= b`
+MPL: `a ≠ b` (U+2260)
 
 ### Greater than
 Python: `a > b`<br>
@@ -56,7 +56,7 @@ MPL: `a > b`
 
 ### Greater than or equal to
 Python: `a >= b`<br>
-MPL: `a >= b`
+MPL: `a ≥ b` (U+2265)
 
 ### Less than
 Python: `a < b`<br>
@@ -64,24 +64,46 @@ MPL: `a < b`
 
 ### Less than or equal to
 Python: `a <= b`<br>
-MPL: `a <= b`
+MPL: `a ≤ b` (U+2264)
 
 ## Logical operators
 
 ### Negation
 Python: `not a`<br>
 C/C++/Java: `!a`<br>
-MPL: `~a` ([source](https://en.wikipedia.org/wiki/Negation))
+MPL: `¬a` ([source](https://en.wikipedia.org/wiki/Negation), U+00AC)
 
 ### And
 Python: `a and b`<br>
 C/C++/Java: `a && b`<br>
-MPL: `a ^ b` ([source](https://en.wikipedia.org/wiki/Logical_conjunction))
+MPL: `a ∧ b` ([source](https://en.wikipedia.org/wiki/Logical_conjunction), U+2227)
 
 ### Or
 Python: `a or b`<br>
 C/C++/Java: `a || b`<br>
-MPL: `a + b` ([source](https://en.wikipedia.org/wiki/Logical_disjunction))
+MPL: `a ∨ b` ([source](https://en.wikipedia.org/wiki/Logical_disjunction), U+2228)
+
+## Arithmetic operators
+
+### Addition
+Python: `a + b`<br>
+MPL: `a + b`
+
+### Subtraction
+Python: `a - b`<br>
+MPL: `a - b`
+
+### Multiplication
+Python: `a * b`<br>
+MPL: `a × b` (Unicode U+00D7 × MULTIPLICATION SIGN)
+
+### Division
+Python: `a / b`<br>
+MPL: `a / b`
+
+### Exponentiation
+Python: `a ** b`<br>
+MPL: `a ^ b`
 
 ## Bitwise operators
 
@@ -99,7 +121,7 @@ MPL: `Let a be b`
 There are two number types: number and double precision floating point number. They are variable bit, like python.
 
 ### Character types
-Because MPL is designed to be inclusive of everyone's cultures, characters will be encoded in Unicode, so it's not just English letters. To define a character, use the single quotation mark ('c')
+Characters do not exist abd are stored with integer types. To define a character, use the single quotation mark ('c')
 
 C/C++/Java: `char c = 'a';`
 
@@ -109,26 +131,24 @@ MPL: `Let c be 'a'.`
 Doesn't exist, go write your own ~~array~~ list of chars.
 Double quotation marks ("") is the same as an array of chars, so "abc" is equivalent to ['a','b','c'].
 
-### Lists
-Lists aren't really a thing in mathematics (at least to my knowledge), so I'll just use the Computing definition of Lists/Arrays in here.
+### Vectors
+A vector is an ordered collection of items that supports duplicates. Elements can be modified or read by index number, and indices  start at 1 (lol).
 
-A list is an ordered collection of items that supports duplicates. Elements can be modified or read by index number, and indices  start at 1 (lol).
+the ith element of vector is set to x: `Let list_i be x`
+read the ith element of the vector: `list_i`
 
-the ith element of list is set to x: `Let list_i be x`
-read the ith element of the list: `list_i`
+MPL has a ~~bizarre~~ unique underscore extraction operator because it's subscript notation is used in math. 
 
-MPL has this ~~bizarre~~ unique underscore extraction operator because I've seen people use subscript as indices in math. 
-
-To create a list, specify the length of the list. This can be a variable or a constant. The list is not initialized with 0 so it could be filled with garbage.
+To create a vector, specify the number of dimensions in the vector. This can be a variable or a constant. The vector is not initialized with 0 so it could be filled with garbage.
 
 ```
-Let list be 4 long.
+Let list be 4 dimensions.
 
-Let list2Length be 500.
-Let list2 be list2Length long.
+Let list2Length be 34.
+Let list2 be list2Length dimensions.
 ```
 
-You must free the list when it is no longer in use. Otherwise, you will create a memory leak.
+You must free the vector when it is no longer in use. Otherwise, you will create a memory leak.
 ```
 Forget list. Forget list2.
 ```

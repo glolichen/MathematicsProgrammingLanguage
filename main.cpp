@@ -19,7 +19,7 @@ int main() {
 	for (lexer::Token token : tokens) {
 		std::cout << token.token << " ";
 		std::cout << lexer::type_to_string(token.type) << " ";
-		std::cout << token.sentence << "\n";
+		std::cout << token.sentenceNum << "\n";
 	}
 
 	return 0;
