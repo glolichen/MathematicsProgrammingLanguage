@@ -4,6 +4,8 @@ A really cursed language where you wrote code that looks like mathematical proof
 
 My goal with MPL is to create a language that is both pointlessly verbose and unreadable and low level, hopefully lower than C and similar to assembly. Below is a specification for MPL syntax and features.
 
+The interpreter for MPL is written under directions provided by Robert Nystrom's book [Crafting Interpreters](https://craftinginterpreters.com/)
+
 ## Variables
 
 Variables must be definied with the syntax:
