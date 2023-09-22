@@ -68,7 +68,13 @@ namespace lexer {
 		{ "output", OUTPUT },
 	};
 
-	extern std::map<std::vector<std::string>, int> multiWordKeywords;
+	struct MultiWordKeyword {
+		std::string keyword;
+		int tokenType;
+		size_t wordCount;
+		std::vector<std::string> split;
+	};
+	extern std::vector<MultiWordKeyword> multiWordKeywords;
 
 	void init();
 	std::string type_to_string(int type);

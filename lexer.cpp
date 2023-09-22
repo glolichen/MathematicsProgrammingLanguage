@@ -14,7 +14,7 @@ using lexer::TokenType;
 const std::string LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const std::string NUMBERS = "0123456789";
 
-std::map<std::vector<std::string>, int> lexer::multiWordKeywords;
+std::vector<lexer::MultiWordKeyword> lexer::multiWordKeywords;
 
 void lexer::init() {
 	for (std::pair<std::string, int> kwd : lexer::KEYWORDS) {
@@ -30,8 +30,9 @@ void lexer::init() {
 		}
 		if (cur != "")
 			split.push_back(cur);
-		if (split.size() > 1)
-			lexer::multiWordKeywords.insert({ split, kwd.second });
+		if (split.size() > 1) {
+			lexer::multiWordKeywords.push_back({ kwd.first, kwd.second, split.size(), split });
+		}
 	}
 }
 
@@ -190,23 +191,22 @@ void lexer::lex(std::string text, std::vector<lexer::Token> &output) {
 		}
 	}
 
-	// for (int i = 0; i < output.size(); i++) {
-	// 	if (i < output.size() - 1 && output[i].token == "For" && output[i + 1].token == "each") {
-	// 		output[i] = { KEYWD, output[i].sentence, "For each" };
-	// 		output.erase(std::next(output.begin(), i + 1));
-	// 		i--;
-	// 	}
-	// 	if (i < output.size() - 4 && output[i].token == "be" && output[i + 1].token == "the"
-	// 		&& output[i + 2].token == "function" && output[i + 3].token == "defined" && output[i + 4].token == "for") {
-
-	// 		output[i] = { BTFDF, output[i].sentence, "be the function defined for" };
-	// 		output.erase(std::next(output.begin(), i + 1), std::next(output.begin(), i + 5));
-	// 		i -= 4;
-	// 	}
-	// 	if (i < output.size() - 2 && output[i].token == "and" && output[i + 1].token == "defined" && output[i + 2].token == "by") {
-	// 		output[i] = { ADB, output[i].sentence, "and defined by" };
-	// 		output.erase(std::next(output.begin(), i + 1), std::next(output.begin(), i + 3));
-	// 		i -= 2;
-	// 	}
-	// }
+	for (int i = 0; i < output.size(); i++) {
+		for (int j = 0; j < multiWordKeywords.size(); j++) {
+			if (i >= output.size() - multiWordKeywords[j].wordCount)
+				continue;
+			bool found = true;
+			for (int k = 0; k < multiWordKeywords[j].wordCount; k++) {
+				if (output[i + k].token != multiWordKeywords[j].split[k]) {
+					found = false;
+					break;
+				}
+			}
+			if (found) {
+				output[i] = { multiWordKeywords[j].tokenType, output[i].sentenceNum, multiWordKeywords[j].keyword };
+				output.erase(std::next(output.begin(), i + 1), std::next(output.begin(), i + multiWordKeywords[j].wordCount));
+				i -= multiWordKeywords[j].wordCount;
+			}
+		}
+	}
 }
