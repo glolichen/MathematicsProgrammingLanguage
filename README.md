@@ -2,7 +2,7 @@
 
 A really cursed language where you wrote code that looks like mathematical proofs. Inspired by [Shakespeare Programming Language](https://en.wikipedia.org/wiki/Shakespeare_Programming_Language#Example_code), where programs appear like Shakespearean plays.
 
-My goal with MPL is to create a language that is both pointlessly verbose and unreadable and low level, hopefully lower than C. Below is a specification for MPL syntax and features.
+My goal with MPL is to create a language that is both pointlessly verbose and unreadable and low level, hopefully lower than C and similar to assembly. Below is a specification for MPL syntax and features.
 
 ## Variables
 
