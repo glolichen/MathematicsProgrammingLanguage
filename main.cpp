@@ -7,6 +7,8 @@
 #include "parser.hpp"
 
 int main() {
+	lexer::init();
+	
 	std::ifstream fin("samplecode.mpl");
 	
 	std::stringstream ss;

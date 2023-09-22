@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include <unordered_map>
 
 namespace lexer {
@@ -67,6 +68,9 @@ namespace lexer {
 		{ "output", OUTPUT },
 	};
 
+	extern std::map<std::vector<std::string>, int> multiWordKeywords;
+
+	void init();
 	std::string type_to_string(int type);
 	void lex(std::string text, std::vector<Token> &output);
 }

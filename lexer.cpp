@@ -4,6 +4,7 @@
 #include <vector>
 #include <sstream>
 #include <stdexcept>
+#include <map>
 #include <regex>
 
 #include "lexer.hpp"
@@ -12,6 +13,27 @@ using lexer::TokenType;
 
 const std::string LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const std::string NUMBERS = "0123456789";
+
+std::map<std::vector<std::string>, int> lexer::multiWordKeywords;
+
+void lexer::init() {
+	for (std::pair<std::string, int> kwd : lexer::KEYWORDS) {
+		std::vector<std::string> split;
+		std::string cur = "";
+		for (char c : kwd.first) {
+			if (c == ' ') {
+				split.push_back(cur);
+				cur = "";
+				continue;
+			}
+			cur += c;
+		}
+		if (cur != "")
+			split.push_back(cur);
+		if (split.size() > 1)
+			lexer::multiWordKeywords.insert({ split, kwd.second });
+	}
+}
 
 bool is_letter(char c) {
 	for (char letter : LETTERS) {
