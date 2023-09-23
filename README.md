@@ -144,10 +144,10 @@ MPL has a ~~bizarre~~ unique underscore extraction operator because it's subscri
 To create a vector, specify the number of dimensions in the vector. This can be a variable or a constant. The vector is not initialized with 0 so it could be filled with garbage.
 
 ```
-Let list be 4 dimensions.
+Let list have 4 dimensions.
 
 Let list2Length be 34.
-Let list2 be list2Length dimensions.
+Let list2 have list2Length dimensions.
 ```
 
 You must free the vector when it is no longer in use. Otherwise, you will create a memory leak.
