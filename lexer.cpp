@@ -9,6 +9,8 @@
 
 #include "lexer.hpp"
 
+// TODO: Implement all operators and symbols (logical)
+
 using lexer::TokenType;
 
 const std::string LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -172,6 +174,10 @@ void lexer::lex(std::string text, std::vector<lexer::Token> &output) {
 					output.push_back(lexer::Token{ LPAR, curSentence, ret });
 				else if (c == ')')
 					output.push_back(lexer::Token{ RPAR, curSentence, ret });
+				else if (c == '[')
+					output.push_back(lexer::Token{ LBKT, curSentence, ret });
+				else if (c == ']')
+					output.push_back(lexer::Token{ RBKT, curSentence, ret });
 				else if (c == '+')
 					output.push_back(lexer::Token{ ADD, curSentence, ret });
 				else if (c == '-') {
@@ -187,6 +193,10 @@ void lexer::lex(std::string text, std::vector<lexer::Token> &output) {
 					output.push_back(lexer::Token{ DIVIDE, curSentence, ret });
 				else if (c == '=')
 					output.push_back(lexer::Token{ EQUAL, curSentence, ret });
+				else if (c == '^')
+					output.push_back(lexer::Token{ EXPONENT, curSentence, ret });
+				else if (c == '_')
+					output.push_back(lexer::Token{ UNDERSCORE, curSentence, ret });
 			}
 		}
 	}
