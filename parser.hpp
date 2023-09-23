@@ -1,20 +1,22 @@
 #ifndef PARSER_H
 #define PARSER_H
 
+#include <string>
 #include "lexer.hpp"
 
-/*
-expression: literal, unary (not), binary (all the other operators), grouping (?)
-literal: int, float, char, string
-grouping: "(" + expression + ")"
-
-
-*/
-
 namespace Parser {
+	class Literal {};
 	class Expression {};
 
-	class Binary : Expression {
+	class String : public Literal {
+	public:
+		std::string literal;
+		String(std::string literal) {
+			this->literal = literal;
+		}
+	};
+
+	class Binary : public Expression {
 	public:
 		Expression left, right;
 		lexer::Token operation;
@@ -25,7 +27,7 @@ namespace Parser {
 		}
 	};
 
-	class Assign : Expression {
+	class Assign : public Expression {
 	public:
 		lexer::Token name;
 		Expression value;
@@ -35,7 +37,7 @@ namespace Parser {
 		}
 	};
 
-	class Group : Expression {
+	class Group : public Expression {
 	public:
 		Expression expr;
 		Group(Expression expr) {
@@ -43,7 +45,7 @@ namespace Parser {
 		}
 	};
 
-	class Unary : Expression {
+	class Unary : public Expression {
 	public:
 		lexer::Token operation;
 		Expression operand;
@@ -53,23 +55,29 @@ namespace Parser {
 		}
 	};
 
-	class Assign : Expression {
+	class LiteralExpr : public Expression {
 	public:
-		lexer::Token name;
-		Expression value;
-		Assign(lexer::Token name, Expression value) {
-			this->name = name;
+		Literal value;
+		LiteralExpr(Literal value) {
 			this->value = value;
 		}
 	};
 
-	class Assign : Expression {
+	class Goto : Expression {
 	public:
-		lexer::Token name;
-		Expression value;
-		Assign(lexer::Token name, Expression value) {
-			this->name = name;
-			this->value = value;
+		int sentence;
+		Goto(int sentence) {
+			this->sentence = sentence;
+		}
+	};
+
+	class GotoIf : Expression {
+	public:
+		int sentence;
+		Expression condition;
+		GotoIf(int sentence, Expression condition) {
+			this->sentence = sentence;
+			this->condition = condition;
 		}
 	};
 }
