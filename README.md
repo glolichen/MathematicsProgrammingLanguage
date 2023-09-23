@@ -97,7 +97,7 @@ MPL: `a - b`
 
 ### Multiplication
 Python: `a * b`<br>
-MPL: `a × b` (Unicode U+00D7 × MULTIPLICATION SIGN)
+MPL: `a × b` (U+00D7)
 
 ### Division
 Python: `a / b`<br>
