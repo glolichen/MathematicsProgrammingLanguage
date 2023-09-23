@@ -134,7 +134,7 @@ Doesn't exist, go write your own ~~array~~ list of chars.
 Double quotation marks ("") is the same as an array of chars, so "abc" is equivalent to ['a','b','c'].
 
 ### Vectors
-A vector is an ordered collection of items that supports duplicates. Elements can be modified or read by index number, and indices  start at 1 (lol).
+A vector is an ordered collection of items that supports duplicates. Elements can be modified or read by index number, and indices start at 1 (lol).
 
 the ith element of vector is set to x: `Let list_i be x`
 read the ith element of the vector: `list_i`
