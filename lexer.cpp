@@ -31,7 +31,7 @@ void lexer::init() {
 		if (cur != "")
 			split.push_back(cur);
 		if (split.size() > 1) {
-			lexer::multiWordKeywords.push_back({ kwd.first, kwd.second, split.size(), split });
+			lexer::multiWordKeywords.push_back(lexer::MultiWordKeyword{ kwd.first, kwd.second, split.size(), split });
 		}
 	}
 }
@@ -86,7 +86,7 @@ void lexer::lex(std::string text, std::vector<lexer::Token> &output) {
 
 		if (c == '.' && (i == text.size() - 1 || text[i + 1] == ' ' || text[i + 1] == '\n')) {
 			if (!isComment) {
-				output.push_back({ PERIOD, curSentence, "." });
+				output.push_back(lexer::Token{ PERIOD, curSentence, "." });
 				curSentence++;
 			}
 			isComment = false;
@@ -98,9 +98,9 @@ void lexer::lex(std::string text, std::vector<lexer::Token> &output) {
 				});
 				int keyword = get_keyword(token);
 				if (keyword == -1)
-					output.push_back({ IDENTIFIER, curSentence, token });
+					output.push_back(lexer::Token{ IDENTIFIER, curSentence, token });
 				else
-					output.push_back({ keyword, curSentence, token });
+					output.push_back(lexer::Token{ keyword, curSentence, token });
 			}
 			else if (is_number(c)) {
 				std::string token = scan(text, &i, [](std::string string, int index) {
@@ -114,9 +114,9 @@ void lexer::lex(std::string text, std::vector<lexer::Token> &output) {
 					}
 				}
 				if (isFloat)
-					output.push_back({ FLOAT_LIT, curSentence, token });
+					output.push_back(lexer::Token{ FLOAT_LIT, curSentence, token });
 				else
-					output.push_back({ INT_LIT, curSentence, token });
+					output.push_back(lexer::Token{ INT_LIT, curSentence, token });
 			}
 			else if (c == '"') {
 				bool isClosed = false;
@@ -131,13 +131,13 @@ void lexer::lex(std::string text, std::vector<lexer::Token> &output) {
 				}
 				if (!isClosed)
 					throw std::invalid_argument("unclosed string literal");
-				output.push_back({ STR_LIT, curSentence, ret });
+				output.push_back(lexer::Token{ STR_LIT, curSentence, ret });
 			}
 			else if (c == '\'') {
 				if (text[i + 2] == '\'') {
 					std::string ret(1, text[++i]);
 					ret = "'" + ret + "'";
-					output.push_back({ CHAR_LIT, curSentence, ret });
+					output.push_back(lexer::Token{ CHAR_LIT, curSentence, ret });
 					i++;
 				}
 				else if (text[i + 1] == '\\' && text[i + 3] == '\'') {
@@ -158,7 +158,7 @@ void lexer::lex(std::string text, std::vector<lexer::Token> &output) {
 						case '0': ret += "0"; break;
 					}
 					ret += "'";
-					output.push_back({ CHAR_LIT, curSentence, ret });
+					output.push_back(lexer::Token{ CHAR_LIT, curSentence, ret });
 					i += 3;
 				}
 				else
@@ -167,26 +167,26 @@ void lexer::lex(std::string text, std::vector<lexer::Token> &output) {
 			else {
 				std::string ret(1, c);
 				if (c == ',')
-					output.push_back({ COMMA, curSentence, ret });
+					output.push_back(lexer::Token{ COMMA, curSentence, ret });
 				else if (c == '(')
-					output.push_back({ LPAR, curSentence, ret });
+					output.push_back(lexer::Token{ LPAR, curSentence, ret });
 				else if (c == ')')
-					output.push_back({ RPAR, curSentence, ret });
+					output.push_back(lexer::Token{ RPAR, curSentence, ret });
 				else if (c == '+')
-					output.push_back({ ADD, curSentence, ret });
+					output.push_back(lexer::Token{ ADD, curSentence, ret });
 				else if (c == '-') {
 					if (i < text.size() - 1 && text[i + 1] == '>') {
-						output.push_back({ ARROW, curSentence, ret + ">" });
+						output.push_back(lexer::Token{ ARROW, curSentence, ret + ">" });
 					}
 					else
-						output.push_back({ SUBTRACT, curSentence, ret });
+						output.push_back(lexer::Token{ SUBTRACT, curSentence, ret });
 				}
 				else if (c == '*')
-					output.push_back({ MULTIPLY, curSentence, ret });
+					output.push_back(lexer::Token{ MULTIPLY, curSentence, ret });
 				else if (c == '/')
-					output.push_back({ DIVIDE, curSentence, ret });
+					output.push_back(lexer::Token{ DIVIDE, curSentence, ret });
 				else if (c == '=')
-					output.push_back({ EQUAL, curSentence, ret });
+					output.push_back(lexer::Token{ EQUAL, curSentence, ret });
 			}
 		}
 	}
@@ -203,7 +203,7 @@ void lexer::lex(std::string text, std::vector<lexer::Token> &output) {
 				}
 			}
 			if (found) {
-				output[i] = { multiWordKeywords[j].tokenType, output[i].sentenceNum, multiWordKeywords[j].keyword };
+				output[i] = lexer::Token{ multiWordKeywords[j].tokenType, output[i].sentenceNum, multiWordKeywords[j].keyword };
 				output.erase(std::next(output.begin(), i + 1), std::next(output.begin(), i + multiWordKeywords[j].wordCount));
 				i -= multiWordKeywords[j].wordCount;
 			}
