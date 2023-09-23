@@ -76,6 +76,7 @@ std::string scan(std::string file, int *index, std::function<bool(std::string, i
 std::string lexer::type_to_string(int type) {
 	return lexer::TOKEN_NAME[type];
 }
+
 void lexer::lex(std::string text, std::vector<lexer::Token> &output) {
 	int curSentence = 1;
 	bool isComment = false;
