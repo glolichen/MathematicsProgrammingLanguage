@@ -24,7 +24,7 @@ namespace lexer {
 		// quotation marks
 		SINGLE_QUOTE, DOUBLE_QUOTE, 
 		// vectors
-		UNDERSCORE, DIMENSIONS, FORGET,
+		UNDERSCORE, DIMENSIONS, FORGET, LBKT, RBKT,
 		// goto and if
 		REFER_TO, IF,
 		// IO
@@ -45,7 +45,7 @@ namespace lexer {
 		"ADD", "SUBTRACT",	"MULTIPLY", "DIVIDE", "EXPONENT",
 		"LET", "BE",
 		"SINGLE_QUOTE", "DOUBLE_QUOTE", 
-		"UNDERSCORE", "DIMENSIONS", "FORGET",
+		"UNDERSCORE", "DIMENSIONS", "FORGET", "LBKT", "RBKT",
 		"REFER_TO", "IF",
 		"OUTPUT", 
 		"INTEGER", "FLOAT", "CHARACTER", "VECTOR",
