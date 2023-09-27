@@ -11,7 +11,7 @@
 
 // TODO: Implement all operators and symbols (logical)
 
-using lexer::TokenType;
+using lexer::TokenTypeEnum;
 
 const std::string LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const std::string NUMBERS = "0123456789";
@@ -117,7 +117,7 @@ void lexer::lex(std::string text, std::vector<lexer::Token> &output) {
 					}
 				}
 				if (isFloat)
-					output.push_back(lexer::Token{ FLOAT_LIT, curSentence, token });
+					output.push_back(lexer::Token{ RATIONAL_LIT, curSentence, token });
 				else
 					output.push_back(lexer::Token{ INT_LIT, curSentence, token });
 			}

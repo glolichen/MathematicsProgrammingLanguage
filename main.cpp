@@ -6,6 +6,8 @@
 #include "lexer.hpp"
 #include "parser.hpp"
 
+#include <gmpxx.h>
+
 int main() {
 	lexer::init();
 	

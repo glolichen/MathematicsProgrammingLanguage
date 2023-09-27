@@ -2,17 +2,36 @@
 #define PARSER_H
 
 #include <string>
+#include <vector>
+#include <gmpxx.h>
 #include "lexer.hpp"
 
-namespace Parser {
+namespace parser {
 	class Literal {};
 	class Expression {};
+	class Statement {};
 
-	class String : public Literal {
+	class StrLit : public Literal {
 	public:
-		std::string literal;
-		String(std::string literal) {
-			this->literal = literal;
+		std::string value;
+		StrLit(std::string value) {
+			this->value = value;
+		}
+	};
+
+	class IntLit : public Literal {
+	public:
+		mpz_class value;
+		IntLit(mpz_class value) {
+			this->value = value;
+		}
+	};
+
+	class RatLit : public Literal {
+	public:
+		mpq_class value;
+		RatLit(mpq_class value) {
+			this->value = value;
 		}
 	};
 
@@ -63,7 +82,33 @@ namespace Parser {
 		}
 	};
 
-	class Goto : Expression {
+	class FuncCall : Expression {
+	public:
+		lexer::Token function;
+		std::vector<lexer::Token> params;
+		FuncCall(lexer::Token function, std::vector<lexer::Token> params) {
+			this->function = function;
+			this->params = params;
+		}
+	};
+
+	class FuncDef : public Statement {
+	public:
+		lexer::Token name;
+		std::vector<lexer::Token> paramTypes, params;
+		lexer::Token returnType;
+		Expression expr;
+		FuncDef(lexer::Token name, std::vector<lexer::Token> paramTypes, 
+				std::vector<lexer::Token> params, lexer::Token returnType, Expression expr) {
+			this->name = name;
+			this->paramTypes = paramTypes;
+			this->params = params;
+			this->returnType = returnType;
+			this->expr = expr;
+		}
+	};
+
+	class Goto : public Statement {
 	public:
 		int sentence;
 		Goto(int sentence) {
@@ -71,7 +116,7 @@ namespace Parser {
 		}
 	};
 
-	class GotoIf : Expression {
+	class GotoIf : public Statement {
 	public:
 		int sentence;
 		Expression condition;
@@ -80,6 +125,8 @@ namespace Parser {
 			this->condition = condition;
 		}
 	};
+
+	void parse(std::vector<lexer::Token> &tokens);
 }
 
 #endif

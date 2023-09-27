@@ -120,7 +120,7 @@ MPL: `Let a be b`
 ## Data types
 
 ### Number types
-There are two number types: number and double precision floating point number. They are variable bit, like python.
+There are two number types: number and rational number. They are variable precision, like python.
 
 ### Character types
 Characters do not exist abd are stored with integer types. To define a character, use the single quotation mark ('c')

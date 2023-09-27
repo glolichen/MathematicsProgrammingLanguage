@@ -13,4 +13,4 @@ COMMENT: we create a list here.
 COMMENT: Let var be 2. COMMENT: For each i in list, output (i+var).
 COMMENT: Let asdffjjf be 5858.231.
 
-Let func be the function defined for (integer, integer) -> integer and defined by func(num1, num2) = num1 + num2.
+Let func be the function defined for (integer, integer) -> rational and defined by func(num1, num2) = num1 + num2.

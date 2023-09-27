@@ -12,7 +12,7 @@ namespace lexer {
 		std::string token;
 	};
 
-	enum TokenType {
+	enum TokenTypeEnum {
 		// comparison operators
 		EQUAL, NOT_EQUAL, GREATER, GREATER_EQUAL, LESS, LESS_EQUAL,
 		// logical operators
@@ -30,11 +30,11 @@ namespace lexer {
 		// IO
 		OUTPUT, 
 		// data types
-		INTEGER, FLOAT, CHARACTER, VECTOR,
+		INTEGER, RATIONAL, CHARACTER, VECTOR,
 		// functions
 		BTFDF, ADB,
 		// literals
-		INT_LIT, FLOAT_LIT, STR_LIT, CHAR_LIT,
+		INT_LIT, RATIONAL_LIT, STR_LIT, CHAR_LIT,
 		// miscellaneous
 		PERIOD, LPAR, RPAR, COMMENT, COMMA, ARROW, IDENTIFIER,
 	};
@@ -48,9 +48,9 @@ namespace lexer {
 		"UNDERSCORE", "DIMENSIONS", "FORGET", "HAVE", "LBKT", "RBKT",
 		"REFER_TO", "IF",
 		"OUTPUT", 
-		"INTEGER", "FLOAT", "CHARACTER", "VECTOR",
+		"INTEGER", "RATIONAL", "CHARACTER", "VECTOR",
 		"BTFDF", "ADB",
-		"INT_LIT", "FLOAT_LIT", "STR_LIT", "CHAR_LIT",
+		"INT_LIT", "RATIONAL_LIT", "STR_LIT", "CHAR_LIT",
 		"PERIOD", "LPAR", "RPAR", "COMMENT", "COMMA", "ARROW", "IDENTIFIER",
 	};
 
@@ -61,7 +61,7 @@ namespace lexer {
 		{ "and defined by", ADB },
 		{ "integer", INTEGER },
 		{ "dimensions", DIMENSIONS },
-		{ "float", FLOAT },
+		{ "rational", RATIONAL },
 		{ "vector", VECTOR },
 		{ "refer to sentence", REFER_TO },
 		{ "if", IF },
